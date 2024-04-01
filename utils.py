@@ -3,8 +3,9 @@ from pypdf import PdfReader
 from langchain_community.document_loaders import (
     UnstructuredExcelLoader,
     UnstructuredWordDocumentLoader)
-from langchain_core.documents import Document
+from langchain.schema import Document
 from typing import List
+from langchain.text_splitter import TokenTextSplitter
 
 def clean_text(text):
     # Remove excessive newlines and keep only ASCII + æøå characters.
@@ -49,3 +50,7 @@ def read_files(content_path):
         for filename in filenames:
             documents.append(process_file(os.path.join(dirname, filename)))
     return documents
+
+def split_document_by_tokens(document: list[Document], chunk_size: int, overlap: int):
+    splitter = TokenTextSplitter(chunk_size=chunk_size, chunk_overlap=overlap)
+    return splitter.split_documents(document)
