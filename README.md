@@ -1,16 +1,17 @@
-# Doucment Summary
+# Document Summary
 
 **Motivation**
 
-This is project related to our bachelor theises. As a subtask, we are to create summaies for tender competitions.
+This is project related to our bachelor thesis. As a part of our project, we are to create summaries for tender competitions. These competitions come with a varying amount of documents, with varying length, file format and quality.
 
-So, for this project, we are exploring the summarzation problem with llms.
+This project will be preparatory work for our bachelor project. We wish to explore different ways to summarize text using commercially available LLMs (Large Language Models). Since we do not know the documents we are to summarize, no specific cleaning or preprocessing can be done, everything has to be generic.
 
 ## Setup
 
-All you need, is python 3.10 or higher, and an openai account with credits. You will need to create a .env file in to root of the project, and add it to a variable named OPENAI_API_KEY.
-
-You may copy from .env.example
+You will need:
+- Python 3.10 or higher
+- An OpenAI API key, which can be aquired [here](https://openai.com/blog/openai-api). You will also need credits on your account.
+- A .env file in the root of the project, containing your OpenAI API key. See [.env.example](.env.example).
 
 ## Document Summaries with langchain
 

@@ -1,15 +1,10 @@
 import re, os
-import pandas
-import numpy as np
-from tempfile import NamedTemporaryFile
 from pypdf import PdfReader
 from langchain_community.document_loaders import (
     UnstructuredExcelLoader,
     UnstructuredWordDocumentLoader)
 from langchain_core.documents import Document
-from werkzeug.datastructures import FileStorage
 from typing import List
-from pathlib import Path
 
 def clean_text(text):
     # Remove excessive newlines and keep only ASCII + æøå characters.
