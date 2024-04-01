@@ -9,6 +9,7 @@ from langchain_community.document_loaders import (
 from langchain_core.documents import Document
 from werkzeug.datastructures import FileStorage
 from typing import List
+from pathlib import Path
 
 def clean_text(text):
     # Remove excessive newlines and keep only ASCII + æøå characters.
@@ -18,15 +19,9 @@ def clean_text(text):
     text = "\n".join([line for line in text.split('\n') if line.strip() != ''])
     return text
 
-def word_document_to_document(file) -> Document:
-    if isinstance(file, str):
-        loader = UnstructuredWordDocumentLoader(file_path=file)
-        data = loader.load()
-    else:
-        with NamedTemporaryFile() as temp_file:
-            self.file.save(temp_file)
-            loader = UnstructuredWordDocumentLoader(temp_file.name)
-            data = loader.load()
+def word_document_to_document(file: str) -> Document:
+    loader = UnstructuredWordDocumentLoader(file_path=file)
+    data = loader.load()
     return data[0]
 
 def pdf_to_document(file) -> Document:
