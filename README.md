@@ -68,7 +68,7 @@ We can use this to our advantage when summarizing documents. If we embed all our
 
 ![img](./assets/nord_clusters.png)
 
-To create these clusters, a clustering algorithm like K-means is used. K-means identifies clusters, then finds the center of the cluster and extracts the nearest chunk, which will represent the "average meaning" of that cluster.
+To create these clusters, a clustering algorithm is used. The algorithm identifies clusters, then we find the center of the cluster and extract the nearest chunk, which will represent the "average meaning" of that cluster.
 
 The goal of this method is to identify key topics in the text and assemble them to create a context-rich summary while spending as little as possible on API fees.
 
