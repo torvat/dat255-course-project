@@ -10,33 +10,65 @@ This project will be preparatory work for our bachelor project. We wish to explo
 
 You will need:
 - Python 3.10 or higher
+- A Python environment with all packages from [req.txt](req.txt) installed.
 - An OpenAI API key, which can be aquired [here](https://openai.com/blog/openai-api). You will also need credits on your account.
 - A .env file in the root of the project, containing your OpenAI API key. See [.env.example](.env.example).
 
-## Document Summaries with langchain
+## Document Summaries with Langchain
 
-&nbsp; In this project we have been attacking the summarization problem with llms
+&nbsp; In this project we have been exploring different methods to summarize text using commercially available LLMs. To do this, we have used the framework Langchain extensively.
 
-**What is the problem?**
+Langchain is a framework for developing applications powered by language models. You can read more about Langchain [here](https://python.langchain.com/docs/get_started/introduction).
 
-&nbsp; Most commercial llms have an token limit. This token limit gives an restriction on how much input you can give the llm, and how much output you can expect back.
+**The summarization problem**
 
-Here is where the problem with summarzaion comes in. What do you do if you want to summarize a large document with 500 or 700 pages, or maybe you have several documents to combine and summarize? This overexceeds the token limit scale if you want to do this in one single call to the llm.
+&nbsp; All LLMs have a token limit due to how they are designed and trained. This token limit gives a restriction on how much input you can give the LLM, and how much output you can expect back.
 
-This means we need a way to divide the documents into smaller pieces, summarize each piece, and merge them together in the end to create one summary. For this approch we can use the langchain.
+Here are some well known LLMs and their token limits:
 
-### Stuff documents chain
+| Model                      | Token Limit | Max Output Tokens |
+|----------------------------|----------------|-------------------|
+| GPT-4-Turbo-Preview        | 128 000        | 4096              |
+| GPT-3.5-Turbo              | 16 385         | 4096              |
+| Claude 3 Opus/Sonnet/Haiku | 200 000        | 4096              |
 
-Stuff document chain is a method used for smaller chain problems. Typecally you will give the llm some context, and prompt the llm for the content. This can also be used for summarization. How ever this is not good approch if you have large texts, because the stuff documents only query the api, with one api call, and dont divide it into pieces.
+As we can see, most modern LLMs have a pretty big context window. But what if you want to summarize a huge document with over 500 pages, or maybe you have several documents to combine and summarize? This can quickly exceed the token limit if you want to do this in a single call to the LLM.
+
+This means that summarizing the entire document at once is not always feasible, so we need new strategies for generating good summaries for long texts.
+
+And, even if summarizing the entire document is possible, cost is an important factor. Commercial LLMs charge money per input and output token, and summarizing many huge documents will bloat the bill quickly.
+
+### Stuffing the documents
+
+[Check out the notebook for Document Stuffing here](stuffing.ipynb)
+
+Document stuffing is a method used for smaller documents. Like the name says, this method "Stuffs" the document or documents into the prompt. In Langchain a Chain called "StuffDocumentsChain" is used.
+
+ A StuffDocumentsChain prompt will typically describe the task, and then insert the document(s). However, as we have discussed earlier, this is not a good approch if you have large documents, because this chain only queries the API with one API call containing the whole document.
 
 ![img](./assets/stuff_chain.jpg)
 
-### Map reduce documents chain
+### Map Reduction
 
-Map reduce documents chain is another common approch for summarizing documents, and is more suited for this task. Remember that the solution for the summarzaiton problem is to divide the document into smaller pieces, or chunks, then summarize each chunk, combine them into one summary that the token limit can handle, and return that. That is exactly what MapReduceDocumentChain achives.
+[Check out the notebook for Map Reduction here](map-reduction.ipynb)
+
+Map reduction is another common approach for summarizing documents. This method is able to summarize documents which exceed the LLMs token limit by first breaking the documents into chunks which fit in the context window, then generating summaries for each chunk, and lastly generating a final summary from all the summaries.
+
+This method lets us generate summaries for texts of arbitrary length (if the combined summaries are still too long, you can generate a summary from a group of summaries until they will fit in the context window), but as discussed earlier, cost is a problem. Map Reduction does many calls to the API, and will use a lot of input and output tokens in the process.
 
 ![img](./assets/map_reduce_chain.webp)
 
-## K-clustering
+## Clustering
 
-TBA
+[Check out the notebook for clustering here](k-means-clustering.ipynb)
+
+In this method, you first break the document into chunks, then generate *embeddings* from these chunks. An embedding in this context is a vector representation of text. We use embeddings because machine learning models work with numbers only, and cannot understand human readable text directly. Embeddings contain many dimensions and captures the semantic and syntactic meaning of a piece of text. If you embed many different words, semantically similar words like *tree* and *forest* will end up closer together in the vector space than semantically different words like *lion* and *truck*.
+
+We can use this to our advantage when summarizing documents. If we embed all our chunks, then chunks that are talking about the same topic will be closer together in the vector space. Then, we can *cluster* the chunks together based on their semantic meaning. The image below shows a "squashed down" visualization (the embedding vectors have a dimension of 1536, here they are reduced to 2 dimensions) of the embedding vector space for a tender competition. 
+
+![img](./assets/nord_clusters.png)
+
+To create these clusters, a clustering algorithm like K-means is used. K-means identifies clusters, then finds the center of the cluster and extracts the nearest chunk, which will represent the "average meaning" of that cluster.
+
+The goal of this method is to identify key topics in the text and assemble them to create a context-rich summary while spending as little as possible on API fees.
+
