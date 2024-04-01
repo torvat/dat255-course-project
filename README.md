@@ -2,7 +2,7 @@
 
 **Motivation**
 
-This is project related to our bachelor thesis. As a part of our project, we are to create summaries for tender competitions. These competitions come with a varying amount of documents, with varying length, file format and quality.
+This is a project related to our bachelor thesis. As a part of our project, we are to create summaries for tender competitions. These competitions come with a varying amount of documents, with varying length, file format and quality.
 
 This project will be preparatory work for our bachelor project. We wish to explore different ways to summarize text using commercially available LLMs (Large Language Models). Since we do not know the documents we are to summarize, no specific cleaning or preprocessing can be done, everything has to be generic.
 
