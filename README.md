@@ -72,3 +72,11 @@ To create these clusters, a clustering algorithm like K-means is used. K-means i
 
 The goal of this method is to identify key topics in the text and assemble them to create a context-rich summary while spending as little as possible on API fees.
 
+
+### Sources / Further reading
+
+Summarizing long documents with AI - https://pashpashpash.substack.com/p/tackling-the-challenge-of-document
+
+5 Levels of Summarization: Novice to Expert - https://github.com/gkamradt/langchain-tutorials/blob/main/data_generation/5%20Levels%20Of%20Summarization%20-%20Novice%20To%20Expert.ipynb
+
+Clustering for QA - https://github.com/mendableai/QA_clustering/blob/main/notebooks/clustering_approach.ipynb
