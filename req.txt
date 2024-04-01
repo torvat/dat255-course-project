@@ -1,0 +1,4 @@
+langchain==0.1.14
+pandas==2.2.1
+werkzeug==3.0.1
+pypdf==4.1.0
